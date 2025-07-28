@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW的私站</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://hw233.vip/MainCode/style.css">
+    <style>
+        h1 {
+            color: rgb(var(--blue-d));
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .intro {
+            color: rgba(var(--black), 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+
+        .srt-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .srt-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .panel {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(var(--black), 0.07);
+            transition: all 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(var(--black), 0.1);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(var(--gray-d), 0.3);
+        }
+
+        .panel-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(var(--blue), 0.15);
+            border-radius: 6px;
+            color: rgb(var(--blue-d));
+        }
+
+        .panel h2 {
+            color: rgb(var(--blue-d));
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 320px;
+            padding: 18px;
+            border: 1px solid rgba(var(--gray-d), 0.4);
+            border-radius: 8px;
+            background-color: rgba(var(--gray), 0.4);
+            color: rgb(var(--black));
+            font-size: 1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: rgb(var(--blue));
+            box-shadow: 0 0 0 3px rgba(var(--blue), 0.2);
+        }
+
+        .controls {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 10px 0 20px;
+        }
+
+        button {
+            padding: 11px 22px;
+            background-color: rgb(var(--blue));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background-color: rgba(var(--blue), 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(var(--blue), 0.25);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background-color: rgba(var(--gray-d), 0.7);
+        }
+
+        button.secondary:hover {
+            background-color: rgba(var(--gray-d), 0.85);
+            box-shadow: 0 5px 15px rgba(var(--gray-d), 0.25);
+        }
+
+        .button-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .output-panel {
+            position: relative;
+        }
+
+        .copy-alert {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(var(--blue), 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .copy-alert.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body id="html-body">
+    
+    <page-start>
+        <div id="page-title">
+            SRT转文稿
+        </div>
+        <div id="page-content">
+自用工具。代码AI写的。
+    <div class="srt-container">
+<div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M10 9H9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2>输入SRT字幕</h2>
+            </div>
+            <textarea id="srtInput" placeholder="请粘贴SRT格式的字幕内容..."></textarea>
+        </div>
+
+        <div class="panel output-panel">
+            <div class="panel-header">
+                <div class="panel-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2>转换后的文本</h2>
+            </div>
+            <textarea id="textResult" placeholder="转换后的文本将显示在这里..." readonly></textarea>
+            <div class="copy-alert" id="copyAlert">已复制到剪贴板！</div>
+        </div>
+
+        <div class="controls">
+            <button id="convertBtn">
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                转换字幕
+            </button>
+            <button id="copyBtn" class="secondary">
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4H20C20.5304 4 21.0391 4.21071 21.4142 4.58579C21.7893 4.96086 22 5.46957 22 6V20C22 20.5304 21.7893 21.0391 21.4142 21.4142C21.0391 21.7893 20.5304 22 20 22H8C7.46957 22 6.96086 21.7893 6.58579 21.4142C6.21071 21.0391 6 20.5304 6 20V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 8V16C2 16.5304 2.21071 17.0391 2.58579 17.4142C2.96086 17.7893 3.46957 18 4 18H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                复制结果
+            </button>
+            <button id="clearBtn" class="secondary">
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 6H21M19 6L15 1L11 6M15 1V23M11 6V23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                清空内容
+            </button>
+        </div>
+    </div>
+    </div>
+
+
+
+        </div>
+    </page-start>
+    
+    
+    <script src="https://hw233.vip/MainCode/script.js"></script>
+    <script>
+        const srtInput = document.getElementById('srtInput');
+        const textResult = document.getElementById('textResult');
+        const convertBtn = document.getElementById('convertBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyAlert = document.getElementById('copyAlert');
+
+        function convertSRT() {
+            const srtContent = srtInput.value.trim();
+            if (!srtContent) {
+                alert('请先输入SRT字幕内容');
+                return;
+            }
+
+            const blocks = srtContent.split(/\n\n+/);
+            const textParts = [];
+
+            blocks.forEach(block => {
+                const lines = block.split('\n');
+                const textLines = lines.filter(line => {
+                    return line.trim() !== '' && 
+                           isNaN(parseInt(line.trim())) && 
+                           !line.includes('-->');
+                });
+                textParts.push(...textLines);
+            });
+
+            let result = '';
+            textParts.forEach((part, index) => {
+                const current = part.trim();
+                const next = textParts[index + 1]?.trim() || '';
+
+                const endsWithPunct = /[，。！？,.!?]$/.test(current);
+
+                if (index === textParts.length - 1) {
+                    result += endsWithPunct ? current : current + '。';
+                } else {
+                    if (endsWithPunct) {
+                        result += current;
+                    } else {
+                        if (/^[，。！？,.!?]/.test(next)) {
+                            result += current;
+                        } else {
+                            if (/[。！？.]/.test(next)) {
+                                result += current + '。';
+                            } else {
+                                result += current + '，';
+                            }
+                        }
+                    }
+                }
+            });
+
+            result = result.replace(/，，/g, '，')
+                          .replace(/。，/g, '，')
+                          .replace(/，。/g, '。')
+                          .replace(/。。/g, '。');
+
+
+            textResult.value = result;
+
+            textResult.style.transition = 'all 0.4s ease';
+            textResult.style.backgroundColor = 'rgba(var(--blue), 0.1)';
+            setTimeout(() => {
+                textResult.style.backgroundColor = 'rgba(var(--gray), 0.4)';
+            }, 600);
+        }
+
+        function copyResult() {
+            const text = textResult.value.trim();
+            if (!text) {
+                alert('没有可复制的内容');
+                return;
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                copyAlert.classList.add('show');
+                setTimeout(() => {
+                    copyAlert.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制');
+            });
+        }
+
+        function clearAll() {
+            srtInput.value = '';
+            textResult.value = '';
+            srtInput.focus();
+        }
+
+        convertBtn.addEventListener('click', convertSRT);
+        copyBtn.addEventListener('click', copyResult);
+        clearBtn.addEventListener('click', clearAll);
+
+        srtInput.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                convertSRT();
+            }
+        });
+    </script>
+</body>
+</html>
