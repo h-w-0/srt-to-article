@@ -1,1 +1,3 @@
-# srt-to-article
+# SRT转文稿
+
+自用工具，AI写的
